@@ -404,3 +404,143 @@ export function useCancelSession() {
     onSuccess: () => invalidate(["sessions"]),
   });
 }
+
+/* ----------------------------- profile writes ----------------------------- */
+
+export interface ProfileDraft {
+  full_name: string;
+  email?: string | null;
+  university?: string | null;
+  course?: string | null;
+  year_of_study?: string | null;
+  bio?: string | null;
+  availability_days?: string[];
+  preferred_time?: string | null;
+  mode?: string;
+  onboarded?: boolean;
+}
+
+/** Creates the caller's profile row if missing, otherwise updates it. */
+export function useUpsertProfile() {
+  const invalidate = useInvalidator();
+  return useMutation({
+    mutationFn: async (draft: ProfileDraft) => {
+      const { data: auth } = await supabase.auth.getUser();
+      if (!auth.user) throw new Error("You must be signed in.");
+      const { data: existing } = await supabase
+        .from("profiles")
+        .select("id")
+        .eq("user_id", auth.user.id)
+        .maybeSingle();
+
+      if (existing) {
+        const { error } = await supabase
+          .from("profiles")
+          .update(draft as never)
+          .eq("id", existing.id);
+        if (error) throw new Error(cleanError(error.message));
+        return existing.id as string;
+      }
+
+      const { data, error } = await supabase
+        .from("profiles")
+        .insert({
+          ...draft,
+          user_id: auth.user.id,
+          email: draft.email ?? auth.user.email ?? null,
+        } as never)
+        .select("id")
+        .single();
+      if (error) throw new Error(cleanError(error.message));
+      return data.id as string;
+    },
+    onSuccess: () => invalidate(["my-profile", "network"]),
+  });
+}
+
+/** Resolve skill names to ids, inserting any that don't exist yet. */
+async function resolveSkillIds(items: Array<{ name: string; category: string }>) {
+  if (items.length === 0) return new Map<string, string>();
+  const names = [...new Set(items.map((i) => i.name))];
+  const { data: existing, error } = await supabase
+    .from("skills")
+    .select("id, name")
+    .in("name", names);
+  if (error) throw new Error(cleanError(error.message));
+  const map = new Map<string, string>((existing ?? []).map((s) => [s.name, s.id]));
+  const missing = items.filter((i) => !map.has(i.name));
+  if (missing.length > 0) {
+    const { data: inserted, error: insErr } = await supabase
+      .from("skills")
+      .insert(missing.map((m) => ({ name: m.name, category: m.category })) as never)
+      .select("id, name");
+    if (insErr) throw new Error(cleanError(insErr.message));
+    for (const s of inserted ?? []) map.set(s.name, s.id);
+  }
+  return map;
+}
+
+export interface SkillSelection {
+  name: string;
+  category: string;
+  level: string;
+  kind: "teach" | "learn";
+}
+
+/** Replaces the caller's skill rows with the given selection. */
+export function useSaveUserSkills() {
+  const invalidate = useInvalidator();
+  return useMutation({
+    mutationFn: async ({
+      profileId,
+      skills,
+    }: {
+      profileId: string;
+      skills: SkillSelection[];
+    }) => {
+      const map = await resolveSkillIds(skills);
+      const { error: delErr } = await supabase
+        .from("user_skills")
+        .delete()
+        .eq("profile_id", profileId);
+      if (delErr) throw new Error(cleanError(delErr.message));
+      if (skills.length === 0) return;
+      const rows = skills.map((s) => ({
+        profile_id: profileId,
+        skill_id: map.get(s.name)!,
+        kind: s.kind,
+        level: s.level,
+      }));
+      const { error } = await supabase.from("user_skills").insert(rows as never);
+      if (error) throw new Error(cleanError(error.message));
+    },
+    onSuccess: () => invalidate(["my-profile", "network", "skills"]),
+  });
+}
+
+export function useMarkNotificationRead() {
+  const invalidate = useInvalidator();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase
+        .from("notifications")
+        .update({ read: true })
+        .eq("id", id);
+      if (error) throw new Error(cleanError(error.message));
+    },
+    onSuccess: () => invalidate(["notifications"]),
+  });
+}
+
+/* --------------------------- protected routines --------------------------- */
+
+export const useJoinSession = () =>
+  useRpc("join_session", ["sessions", "my-profile", "transactions", "notifications"]);
+export const useLeaveSession = () =>
+  useRpc("leave_session", ["sessions", "my-profile", "transactions"]);
+export const useCompleteSession = () =>
+  useRpc("complete_session", ["sessions", "my-profile", "transactions", "notifications"]);
+export const usePurchaseBook = () =>
+  useRpc("purchase_book", ["purchases", "my-profile", "transactions"]);
+export const useRateSession = () =>
+  useRpc("rate_session", ["sessions", "ratings", "network"]);
