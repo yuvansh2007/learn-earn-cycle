@@ -375,7 +375,7 @@ export function useSaveSession() {
   return useMutation({
     mutationFn: async ({ id, ...values }: Record<string, unknown> & { id?: string }) => {
       if (id) {
-        const { error } = await supabase.from("sessions").update(values).eq("id", id);
+        const { error } = await supabase.from("sessions").update(values as never).eq("id", id);
         if (error) throw new Error(cleanError(error.message));
         return id;
       }
