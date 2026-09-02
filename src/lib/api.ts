@@ -201,7 +201,7 @@ export function useSessions() {
     queryFn: async (): Promise<SessionRow[]> =>
       unwrap(
         await supabase.from("sessions").select(SESSION_SELECT).order("starts_at"),
-      ),
+      ) as SessionRow[],
   });
 }
 
