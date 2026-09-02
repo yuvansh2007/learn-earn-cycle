@@ -201,7 +201,7 @@ export function useSessions() {
     queryFn: async (): Promise<SessionRow[]> =>
       unwrap(
         await supabase.from("sessions").select(SESSION_SELECT).order("starts_at"),
-      ),
+      ) as SessionRow[],
   });
 }
 
@@ -298,7 +298,10 @@ export function useRpc(fn: string, invalidates: string[]) {
   const invalidate = useInvalidator();
   return useMutation({
     mutationFn: async (args: Record<string, unknown>) => {
-      const { data, error } = await supabase.rpc(fn, args);
+      const { data, error } = await supabase.rpc(
+        fn as Parameters<typeof supabase.rpc>[0],
+        args as Parameters<typeof supabase.rpc>[1],
+      );
       if (error) throw new Error(cleanError(error.message));
       return data;
     },
@@ -372,7 +375,7 @@ export function useSaveSession() {
   return useMutation({
     mutationFn: async ({ id, ...values }: Record<string, unknown> & { id?: string }) => {
       if (id) {
-        const { error } = await supabase.from("sessions").update(values).eq("id", id);
+        const { error } = await supabase.from("sessions").update(values as never).eq("id", id);
         if (error) throw new Error(cleanError(error.message));
         return id;
       }
