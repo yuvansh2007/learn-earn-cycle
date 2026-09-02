@@ -298,7 +298,10 @@ export function useRpc(fn: string, invalidates: string[]) {
   const invalidate = useInvalidator();
   return useMutation({
     mutationFn: async (args: Record<string, unknown>) => {
-      const { data, error } = await supabase.rpc(fn as Parameters<typeof supabase.rpc>[0], args);
+      const { data, error } = await supabase.rpc(
+        fn as Parameters<typeof supabase.rpc>[0],
+        args as Parameters<typeof supabase.rpc>[1],
+      );
       if (error) throw new Error(cleanError(error.message));
       return data;
     },
