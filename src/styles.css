@@ -204,10 +204,10 @@
   font-size: 0.875rem;
   line-height: 1.25rem;
   transition: border-color 150ms var(--ease-editorial);
-}
 
-@utility select-field:hover {
-  border-color: color-mix(in oklab, var(--color-primary) 45%, transparent);
+  &:hover {
+    border-color: color-mix(in oklab, var(--color-primary) 45%, transparent);
+  }
 }
 
 @utility card-surface {
