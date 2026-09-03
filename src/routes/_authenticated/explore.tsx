@@ -74,7 +74,7 @@ function Explore() {
         <select
           value={focus ?? ""}
           onChange={(e) => setFocus(e.target.value || undefined)}
-          className="h-10 rounded-md border border-input bg-background px-3 text-sm"
+          className="select-field w-full sm:w-auto sm:min-w-52"
         >
           <option value="">Focus skill: any</option>
           {ALL_SKILLS.map((s) => (

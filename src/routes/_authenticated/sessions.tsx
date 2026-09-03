@@ -127,7 +127,7 @@ function SessionsPage() {
               id="skill"
               value={form.skill_id}
               onChange={(e) => setForm({ ...form, skill_id: e.target.value })}
-              className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
+              className="select-field"
             >
               <option value="">No specific skill</option>
               {(skills.data ?? []).map((s) => (
@@ -183,7 +183,7 @@ function SessionsPage() {
               id="level"
               value={form.level}
               onChange={(e) => setForm({ ...form, level: e.target.value })}
-              className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
+              className="select-field"
             >
               {["Beginner", "Intermediate", "Advanced"].map((l) => (
                 <option key={l}>{l}</option>

@@ -74,7 +74,7 @@ function Library() {
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          className="h-10 rounded-md border border-input bg-background px-3 text-sm"
+          className="select-field w-full sm:w-auto sm:min-w-52"
         >
           <option value="">All categories</option>
           {BOOK_CATEGORIES.map((c) => (
