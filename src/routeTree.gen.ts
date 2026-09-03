@@ -17,6 +17,7 @@ import { Route as AuthenticatedDashboardRouteImport } from './routes/_authentica
 import { Route as AuthenticatedExploreRouteImport } from './routes/_authenticated/explore'
 import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
 import { Route as AuthenticatedSessionsRouteImport } from './routes/_authenticated/sessions'
+import { Route as AuthenticatedWalletRouteImport } from './routes/_authenticated/wallet'
 import { Route as AuthenticatedProfileIdRouteImport } from './routes/_authenticated/profile.$id'
 
 const IndexRoute = IndexRouteImport.update({
@@ -59,6 +60,11 @@ const AuthenticatedSessionsRoute = AuthenticatedSessionsRouteImport.update({
   path: '/sessions',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedWalletRoute = AuthenticatedWalletRouteImport.update({
+  id: '/wallet',
+  path: '/wallet',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedProfileIdRoute = AuthenticatedProfileIdRouteImport.update({
   id: '/profile/$id',
   path: '/profile/$id',
@@ -73,6 +79,7 @@ export interface FileRoutesByFullPath {
   '/explore': typeof AuthenticatedExploreRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/sessions': typeof AuthenticatedSessionsRoute
+  '/wallet': typeof AuthenticatedWalletRoute
   '/profile/$id': typeof AuthenticatedProfileIdRoute
 }
 export interface FileRoutesByTo {
@@ -83,6 +90,7 @@ export interface FileRoutesByTo {
   '/explore': typeof AuthenticatedExploreRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/sessions': typeof AuthenticatedSessionsRoute
+  '/wallet': typeof AuthenticatedWalletRoute
   '/profile/$id': typeof AuthenticatedProfileIdRoute
 }
 export interface FileRoutesById {
@@ -95,6 +103,7 @@ export interface FileRoutesById {
   '/_authenticated/explore': typeof AuthenticatedExploreRoute
   '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
   '/_authenticated/sessions': typeof AuthenticatedSessionsRoute
+  '/_authenticated/wallet': typeof AuthenticatedWalletRoute
   '/_authenticated/profile/$id': typeof AuthenticatedProfileIdRoute
 }
 export interface FileRouteTypes {
@@ -107,6 +116,7 @@ export interface FileRouteTypes {
     | '/explore'
     | '/onboarding'
     | '/sessions'
+    | '/wallet'
     | '/profile/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -117,6 +127,7 @@ export interface FileRouteTypes {
     | '/explore'
     | '/onboarding'
     | '/sessions'
+    | '/wallet'
     | '/profile/$id'
   id:
     | '__root__'
@@ -128,6 +139,7 @@ export interface FileRouteTypes {
     | '/_authenticated/explore'
     | '/_authenticated/onboarding'
     | '/_authenticated/sessions'
+    | '/_authenticated/wallet'
     | '/_authenticated/profile/$id'
   fileRoutesById: FileRoutesById
 }
@@ -195,6 +207,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSessionsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/wallet': {
+      id: '/_authenticated/wallet'
+      path: '/wallet'
+      fullPath: '/wallet'
+      preLoaderRoute: typeof AuthenticatedWalletRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/profile/$id': {
       id: '/_authenticated/profile/$id'
       path: '/profile/$id'
@@ -211,6 +230,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedExploreRoute: typeof AuthenticatedExploreRoute
   AuthenticatedOnboardingRoute: typeof AuthenticatedOnboardingRoute
   AuthenticatedSessionsRoute: typeof AuthenticatedSessionsRoute
+  AuthenticatedWalletRoute: typeof AuthenticatedWalletRoute
   AuthenticatedProfileIdRoute: typeof AuthenticatedProfileIdRoute
 }
 
@@ -220,6 +240,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedExploreRoute: AuthenticatedExploreRoute,
   AuthenticatedOnboardingRoute: AuthenticatedOnboardingRoute,
   AuthenticatedSessionsRoute: AuthenticatedSessionsRoute,
+  AuthenticatedWalletRoute: AuthenticatedWalletRoute,
   AuthenticatedProfileIdRoute: AuthenticatedProfileIdRoute,
 }
 
