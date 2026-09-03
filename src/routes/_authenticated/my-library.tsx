@@ -50,12 +50,12 @@ function MyLibrary() {
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {rows.map((p) => (
-            <article key={p.id} className="rounded-xl border border-border p-5">
+            <article key={p.id} className="rounded-xl border border-border bg-card/40 p-5">
               <div
                 className="mb-4 h-24 rounded-lg"
                 style={{ background: `oklch(0.35 0.09 ${p.books?.cover_hue ?? 60})` }}
               />
-              <h2 className="font-display text-lg font-semibold">{p.books?.title}</h2>
+              <h2 className="font-display text-base font-semibold sm:text-lg">{p.books?.title}</h2>
               <p className="text-xs text-muted-foreground">
                 {p.books?.author} · {p.books?.category}
               </p>

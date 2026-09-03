@@ -111,7 +111,7 @@ function SessionsPage() {
       />
 
       {open ? (
-        <form onSubmit={createSession} className="mb-10 grid gap-4 rounded-xl border border-border p-6 sm:grid-cols-2">
+        <form onSubmit={createSession} className="animate-rise mb-10 grid gap-4 rounded-xl border border-border bg-card/40 p-4 sm:grid-cols-2 sm:p-6">
           <div className="space-y-2 sm:col-span-2">
             <Label htmlFor="title">Title</Label>
             <Input
@@ -127,7 +127,7 @@ function SessionsPage() {
               id="skill"
               value={form.skill_id}
               onChange={(e) => setForm({ ...form, skill_id: e.target.value })}
-              className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
+              className="select-field"
             >
               <option value="">No specific skill</option>
               {(skills.data ?? []).map((s) => (
@@ -183,7 +183,7 @@ function SessionsPage() {
               id="level"
               value={form.level}
               onChange={(e) => setForm({ ...form, level: e.target.value })}
-              className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
+              className="select-field"
             >
               {["Beginner", "Intermediate", "Advanced"].map((l) => (
                 <option key={l}>{l}</option>
@@ -204,7 +204,7 @@ function SessionsPage() {
               {error}
             </p>
           ) : null}
-          <Button type="submit" className="sm:col-span-2" disabled={save.isPending}>
+          <Button type="submit" size="lg" className="w-full sm:col-span-2" disabled={save.isPending}>
             {save.isPending ? "Scheduling…" : "Schedule session"}
           </Button>
         </form>
@@ -223,15 +223,15 @@ function SessionsPage() {
             const seatsLeft = s.max_participants - participants.length;
 
             return (
-              <article key={s.id} className="rounded-xl border border-border p-5">
+              <article key={s.id} className="rounded-xl border border-border bg-card/40 p-5">
                 <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <h2 className="font-display text-lg font-semibold">{s.title}</h2>
+                  <div className="min-w-0">
+                    <h2 className="font-display text-base font-semibold sm:text-lg">{s.title}</h2>
                     <p className="text-xs text-muted-foreground">
                       {s.teacher?.full_name ?? "Student"} · {s.skill?.name ?? "General"} · {s.level}
                     </p>
                   </div>
-                  <span className="font-mono text-xs text-primary">{s.price_coins} SC</span>
+                  <span className="shrink-0 font-mono text-xs text-primary">{s.price_coins} SC</span>
                 </div>
 
                 <p className="mt-3 text-sm text-muted-foreground">

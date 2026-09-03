@@ -76,8 +76,8 @@ function AuthPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md animate-rise">
+    <div className="flex min-h-screen items-center justify-center px-4 py-10 sm:py-12">
+      <div className="w-full max-w-md animate-rise rounded-2xl border border-border bg-card/40 p-6 sm:p-8">
         <Link to="/" className="font-display text-2xl font-semibold">
           Skill<span className="text-primary">Swap</span>
         </Link>
@@ -145,7 +145,7 @@ function AuthPage() {
               </p>
             ) : null}
 
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button type="submit" size="lg" className="w-full" disabled={loading}>
               {loading
                 ? "Working…"
                 : mode === "login"

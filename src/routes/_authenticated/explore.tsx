@@ -64,17 +64,17 @@ function Explore() {
         description="Every score is explainable: skills, availability, interests, experience and reputation."
       />
 
-      <div className="mb-6 flex flex-wrap items-center gap-3">
+      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
         <Input
           placeholder="Search students, skills or universities"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="max-w-sm"
+          className="sm:max-w-sm"
         />
         <select
           value={focus ?? ""}
           onChange={(e) => setFocus(e.target.value || undefined)}
-          className="h-10 rounded-md border border-input bg-background px-3 text-sm"
+          className="select-field w-full sm:w-auto sm:min-w-52"
         >
           <option value="">Focus skill: any</option>
           {ALL_SKILLS.map((s) => (
@@ -92,11 +92,11 @@ function Explore() {
           {ranked.map(({ profile: p, match }) => (
             <article key={p.id} className="animate-rise rounded-xl border border-border p-5">
               <div className="flex items-start justify-between gap-3">
-                <div>
+                <div className="min-w-0">
                   <Link
                     to="/profile/$id"
                     params={{ id: p.id }}
-                    className="font-display text-lg font-semibold hover:text-primary"
+                    className="block truncate font-display text-lg font-semibold hover:text-primary"
                   >
                     {p.full_name}
                   </Link>
@@ -104,7 +104,7 @@ function Explore() {
                     {[p.course, p.year_of_study, p.university].filter(Boolean).join(" · ")}
                   </p>
                 </div>
-                <span className="font-mono text-sm text-primary">{match.score}%</span>
+                <span className="shrink-0 font-mono text-sm text-primary">{match.score}%</span>
               </div>
 
               <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-secondary">

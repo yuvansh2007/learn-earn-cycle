@@ -170,3 +170,48 @@
   letter-spacing: 0.2em;
   color: var(--color-faint);
 }
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    overflow-wrap: break-word;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-primary) 30%, transparent);
+  }
+}
+
+/* Native <select> styled to match the Input primitive. */
+@utility select-field {
+  display: flex;
+  height: 2.5rem;
+  width: 100%;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-input);
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  padding-inline: 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  transition: border-color 150ms var(--ease-editorial);
+
+  &:hover {
+    border-color: color-mix(in oklab, var(--color-primary) 45%, transparent);
+  }
+}
+
+@utility card-surface {
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border);
+  background-color: color-mix(in oklab, var(--color-card) 55%, transparent);
+}

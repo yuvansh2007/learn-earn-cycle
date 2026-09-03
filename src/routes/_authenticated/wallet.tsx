@@ -45,29 +45,29 @@ function Wallet() {
         action={mine.data ? <CoinBadge amount={mine.data.coins} /> : undefined}
       />
 
-      <div className="grid gap-4 sm:grid-cols-3">
-        <div className="rounded-xl border border-border p-5">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
+        <div className="rounded-xl border border-border bg-card/40 p-4 sm:p-5">
           <p className="label-mono">Balance</p>
-          <p className="mt-2 font-display text-3xl font-semibold">{mine.data?.coins ?? 0} SC</p>
+          <p className="mt-2 font-display text-2xl font-semibold sm:text-3xl">{mine.data?.coins ?? 0} SC</p>
         </div>
-        <div className="rounded-xl border border-border p-5">
+        <div className="rounded-xl border border-border bg-card/40 p-4 sm:p-5">
           <p className="label-mono">Earned</p>
-          <p className="mt-2 font-display text-3xl font-semibold text-primary">+{earned}</p>
+          <p className="mt-2 font-display text-2xl font-semibold sm:text-3xl text-primary">+{earned}</p>
         </div>
-        <div className="rounded-xl border border-border p-5">
+        <div className="rounded-xl border border-border bg-card/40 p-4 sm:p-5">
           <p className="label-mono">Spent</p>
-          <p className="mt-2 font-display text-3xl font-semibold">−{spent}</p>
+          <p className="mt-2 font-display text-2xl font-semibold sm:text-3xl">−{spent}</p>
         </div>
       </div>
 
-      <h2 className="mt-10 font-display text-xl font-semibold">Transactions</h2>
+      <h2 className="mt-10 font-display text-lg font-semibold sm:text-xl">Transactions</h2>
       {rows.length === 0 ? (
         <EmptyState title="No transactions yet" hint="Teach a session to earn your first coins." />
       ) : (
         <ul className="mt-4 divide-y divide-border rounded-xl border border-border">
           {rows.map((t) => (
             <li key={t.id} className="flex flex-wrap items-center justify-between gap-3 p-4">
-              <div>
+              <div className="min-w-0">
                 <p className="text-sm">{t.description}</p>
                 <p className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
                   {t.type} · {new Date(t.created_at).toLocaleString()}

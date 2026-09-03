@@ -64,17 +64,17 @@ function Library() {
         action={mine.data ? <CoinBadge amount={mine.data.coins} /> : undefined}
       />
 
-      <div className="mb-6 flex flex-wrap gap-3">
+      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
         <Input
           placeholder="Search titles, authors or topics"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="max-w-sm"
+          className="sm:max-w-sm"
         />
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          className="h-10 rounded-md border border-input bg-background px-3 text-sm"
+          className="select-field w-full sm:w-auto sm:min-w-52"
         >
           <option value="">All categories</option>
           {BOOK_CATEGORIES.map((c) => (
@@ -97,12 +97,12 @@ function Library() {
             const isOwned = owned.has(b.id);
             const affordable = (mine.data?.coins ?? 0) >= b.price_coins;
             return (
-              <article key={b.id} className="flex flex-col rounded-xl border border-border p-5">
+              <article key={b.id} className="flex flex-col rounded-xl border border-border bg-card/40 p-5">
                 <div
                   className="mb-4 h-24 rounded-lg"
                   style={{ background: `oklch(0.35 0.09 ${b.cover_hue})` }}
                 />
-                <h2 className="font-display text-lg font-semibold">{b.title}</h2>
+                <h2 className="font-display text-base font-semibold sm:text-lg">{b.title}</h2>
                 <p className="text-xs text-muted-foreground">
                   {b.author} · {b.category}
                 </p>
@@ -116,7 +116,7 @@ function Library() {
                   </span>
                 </div>
                 <Button
-                  className="mt-4"
+                  className="mt-auto pt-0 [&]:mt-4 w-full"
                   size="sm"
                   disabled={isOwned || !affordable || purchase.isPending}
                   onClick={() => purchase.mutate({ p_book_id: b.id })}
