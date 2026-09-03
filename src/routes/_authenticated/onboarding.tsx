@@ -64,7 +64,7 @@ function SkillPicker({
                 type="button"
                 onClick={() => onToggle(name, category)}
                 className={cn(
-                  "rounded-full border px-3 py-1.5 text-sm transition-colors",
+                  "min-h-9 rounded-full border px-3 py-1.5 text-sm transition-colors",
                   selected.has(name)
                     ? "border-primary bg-primary/15 text-primary"
                     : "border-border text-muted-foreground hover:border-primary/40 hover:text-foreground",
@@ -83,14 +83,14 @@ function SkillPicker({
           <div className="space-y-2">
             {[...selected].map((name) => (
               <div key={name} className="flex flex-wrap items-center gap-2">
-                <span className="min-w-40 text-sm">{name}</span>
+                <span className="w-full text-sm sm:w-40 sm:min-w-40">{name}</span>
                 {EXPERIENCE_LEVELS.map((lvl) => (
                   <button
                     key={lvl}
                     type="button"
                     onClick={() => onLevel(name, lvl)}
                     className={cn(
-                      "rounded-md border px-2 py-1 font-mono text-[11px] uppercase tracking-wider",
+                      "min-h-8 rounded-md border px-2.5 py-1 font-mono text-[11px] uppercase tracking-wider transition-colors",
                       (levels[name] ?? "Beginner") === lvl
                         ? "border-primary bg-primary/15 text-primary"
                         : "border-border text-muted-foreground",
@@ -217,9 +217,11 @@ function Onboarding() {
             : true;
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-10">
+    <div className="mx-auto max-w-3xl px-4 py-8 sm:py-12">
       <p className="label-mono">Step {step + 1} of 5 — {STEPS[step]}</p>
-      <h1 className="mt-2 font-display text-3xl font-semibold">Build your exchange profile</h1>
+      <h1 className="mt-2 font-display text-2xl font-semibold tracking-tight sm:text-3xl">
+        Build your exchange profile
+      </h1>
       <Progress value={((step + 1) / 5) * 100} className="mt-4" />
 
       <div className="mt-8 animate-rise space-y-6">
@@ -246,7 +248,7 @@ function Onboarding() {
                     type="button"
                     onClick={() => setYear(y)}
                     className={cn(
-                      "rounded-full border px-3 py-1.5 text-sm",
+                      "min-h-9 rounded-full border px-3 py-1.5 text-sm transition-colors",
                       year === y
                         ? "border-primary bg-primary/15 text-primary"
                         : "border-border text-muted-foreground",
@@ -325,7 +327,7 @@ function Onboarding() {
                       )
                     }
                     className={cn(
-                      "rounded-full border px-3 py-1.5 text-sm",
+                      "min-h-9 rounded-full border px-3 py-1.5 text-sm transition-colors",
                       days.includes(d)
                         ? "border-primary bg-primary/15 text-primary"
                         : "border-border text-muted-foreground",
@@ -345,7 +347,7 @@ function Onboarding() {
                     type="button"
                     onClick={() => setTime(t)}
                     className={cn(
-                      "rounded-full border px-3 py-1.5 text-sm",
+                      "min-h-9 rounded-full border px-3 py-1.5 text-sm transition-colors",
                       time === t
                         ? "border-primary bg-primary/15 text-primary"
                         : "border-border text-muted-foreground",
@@ -370,7 +372,7 @@ function Onboarding() {
                     type="button"
                     onClick={() => setFormat(f)}
                     className={cn(
-                      "rounded-full border px-4 py-2 text-sm capitalize",
+                      "min-h-10 rounded-full border px-4 py-2 text-sm capitalize transition-colors",
                       format === f
                         ? "border-primary bg-primary/15 text-primary"
                         : "border-border text-muted-foreground",
@@ -390,7 +392,7 @@ function Onboarding() {
                     type="button"
                     onClick={() => setMode(m)}
                     className={cn(
-                      "rounded-full border px-4 py-2 text-sm capitalize",
+                      "min-h-10 rounded-full border px-4 py-2 text-sm capitalize transition-colors",
                       mode === m
                         ? "border-primary bg-primary/15 text-primary"
                         : "border-border text-muted-foreground",
@@ -413,7 +415,7 @@ function Onboarding() {
         ) : null}
       </div>
 
-      <div className="mt-10 flex items-center justify-between gap-3">
+      <div className="sticky bottom-0 -mx-4 mt-10 flex items-center justify-between gap-3 border-t border-border bg-background/90 px-4 py-4 backdrop-blur">
         <Button variant="ghost" onClick={() => setStep((s) => Math.max(0, s - 1))} disabled={step === 0}>
           Back
         </Button>

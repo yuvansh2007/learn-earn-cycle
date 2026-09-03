@@ -63,16 +63,23 @@ function Connections() {
   }) {
     const p = byId.get(profileId);
     return (
-      <li key={id} className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border p-4">
-        <div>
-          <Link to="/profile/$id" params={{ id: profileId }} className="font-medium hover:text-primary">
+      <li
+        key={id}
+        className="flex flex-col gap-3 rounded-xl border border-border bg-card/40 p-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between"
+      >
+        <div className="min-w-0">
+          <Link
+            to="/profile/$id"
+            params={{ id: profileId }}
+            className="block truncate font-medium hover:text-primary"
+          >
             {p?.full_name ?? "Student"}
           </Link>
           <p className="text-xs text-muted-foreground">
             {[p?.course, p?.university].filter(Boolean).join(" · ")}
           </p>
         </div>
-        <div className="flex gap-2">{actions}</div>
+        <div className="flex shrink-0 flex-wrap gap-2">{actions}</div>
       </li>
     );
   }
@@ -86,7 +93,7 @@ function Connections() {
       />
 
       <section>
-        <h2 className="font-display text-xl font-semibold">Incoming requests</h2>
+        <h2 className="font-display text-lg font-semibold sm:text-xl">Incoming requests</h2>
         {incoming.length === 0 ? (
           <EmptyState title="No incoming requests" />
         ) : (
@@ -117,7 +124,7 @@ function Connections() {
       </section>
 
       <section className="mt-10">
-        <h2 className="font-display text-xl font-semibold">Sent requests</h2>
+        <h2 className="font-display text-lg font-semibold sm:text-xl">Sent requests</h2>
         {outgoing.length === 0 ? (
           <EmptyState title="No pending requests" />
         ) : (
@@ -139,7 +146,7 @@ function Connections() {
       </section>
 
       <section className="mt-10">
-        <h2 className="font-display text-xl font-semibold">Partners</h2>
+        <h2 className="font-display text-lg font-semibold sm:text-xl">Partners</h2>
         {accepted.length === 0 ? (
           <EmptyState title="No connections yet" hint="Explore students and send a request." />
         ) : (
