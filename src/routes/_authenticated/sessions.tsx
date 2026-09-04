@@ -101,6 +101,115 @@ function SessionsPage() {
     }
   }
 
+  function SessionCard({ s }: { s: typeof rows[number] }) {
+    const participants = s.session_participants ?? [];
+    const joined = participants.some(
+      (p) => p.profile_id === me?.id && p.status !== "cancelled",
+    );
+    const isTeacher = s.teacher_id === me?.id;
+    const seatsLeft = s.max_participants - participants.length;
+
+    return (
+      <article className="rounded-xl border border-border bg-card/40 p-5">
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <h2 className="font-display text-base font-semibold sm:text-lg">{s.title}</h2>
+            <p className="text-xs text-muted-foreground">
+              {s.teacher?.full_name ?? "Student"} · {s.skill?.name ?? "General"} · {s.level}
+            </p>
+          </div>
+          <span className="shrink-0 font-mono text-xs text-primary">{s.price_coins} SC</span>
+        </div>
+
+        <p className="mt-3 text-sm text-muted-foreground">
+          {new Date(s.starts_at).toLocaleString()} · {s.duration_min} min ·{" "}
+          {seatsLeft > 0 ? `${seatsLeft} seats left` : "Full"}
+        </p>
+        {s.description ? (
+          <p className="mt-2 text-sm text-muted-foreground">{s.description}</p>
+        ) : null}
+
+        <p className="mt-3 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
+          {s.status}
+          {isDemoMeetLink(s.meet_url) ? " · demo meet link" : ""}
+        </p>
+
+        <div className="mt-4 flex flex-wrap gap-2">
+          {s.meet_url ? (
+            <Button asChild size="sm" variant="secondary">
+              <a href={s.meet_url} target="_blank" rel="noreferrer">
+                Join meeting
+              </a>
+            </Button>
+          ) : null}
+          <Button asChild size="sm" variant="ghost">
+            <a
+              href={calendarUrl({
+                title: s.title,
+                description: s.description,
+                startsAt: s.starts_at,
+                durationMin: s.duration_min,
+                location: s.meet_url,
+              })}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Add to calendar
+            </a>
+          </Button>
+
+          {s.status === "scheduled" && !isTeacher ? (
+            joined ? (
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => leave.mutate({ p_session_id: s.id })}
+              >
+                Leave
+              </Button>
+            ) : (
+              <Button size="sm" onClick={() => join.mutate({ p_session_id: s.id })}>
+                Join for {s.price_coins} SC
+              </Button>
+            )
+          ) : null}
+
+          {isTeacher && s.status === "scheduled" ? (
+            <>
+              <Button
+                size="sm"
+                onClick={() => complete.mutate({ p_session_id: s.id })}
+              >
+                Mark complete
+              </Button>
+              <Button size="sm" variant="ghost" onClick={() => cancel.mutate(s.id)}>
+                Cancel
+              </Button>
+            </>
+          ) : null}
+
+          {s.status === "completed" && joined ? (
+            <Button
+              size="sm"
+              variant="secondary"
+              onClick={() => rate.mutate({ p_session_id: s.id, p_stars: 5 })}
+            >
+              Rate 5★
+            </Button>
+          ) : null}
+        </div>
+
+        {(join.error || leave.error || complete.error || rate.error) && (
+          <p className="mt-3 text-xs text-destructive-foreground">
+            {cleanError(
+              (join.error || leave.error || complete.error || rate.error)!.message,
+            )}
+          </p>
+        )}
+      </article>
+    );
+  }
+
   return (
     <AppShell>
       <PageHeader
