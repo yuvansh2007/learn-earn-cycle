@@ -116,7 +116,7 @@ function Library() {
                   </span>
                 </div>
                 <Button
-                  className="mt-auto pt-0 [&]:mt-4 w-full"
+                  className="mt-4 w-full"
                   size="sm"
                   disabled={isOwned || !affordable || purchase.isPending}
                   onClick={() => purchase.mutate({ p_book_id: b.id })}
