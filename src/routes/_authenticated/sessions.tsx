@@ -73,6 +73,8 @@ function SessionsPage() {
   if (sessions.error) return <AppShell><ErrorBlock error={sessions.error} /></AppShell>;
 
   const rows = sessions.data ?? [];
+  const upcoming = rows.filter((s) => s.status === "scheduled");
+  const completed = rows.filter((s) => s.status === "completed");
 
   async function createSession(e: React.FormEvent) {
     e.preventDefault();
