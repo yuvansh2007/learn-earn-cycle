@@ -17,6 +17,7 @@ import {
 } from "@/lib/api";
 import { rankTeachers, buildExchangeGraph, findExchangeCycles } from "@/lib/matching";
 import { Button } from "@/components/ui/button";
+import { CycleCard } from "@/components/cycle-card";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
@@ -149,16 +150,8 @@ function Dashboard() {
           ) : (
             <ul className="mt-4 space-y-3">
               {cycles.map((c) => (
-                <li key={c.members.join("-")} className="rounded-xl border border-border p-4">
-                  <p className="font-mono text-xs text-primary">3-person cycle</p>
-                  <p className="mt-2 text-sm">
-                    {c.edges
-                      .map(
-                        (e) =>
-                          `${nameById.get(e.from) ?? "?"} → ${nameById.get(e.to) ?? "?"} (${e.skill})`,
-                      )
-                      .join("  ·  ")}
-                  </p>
+                <li key={c.members.join("-")}>
+                  <CycleCard cycle={c} nameById={nameById} highlightId={me.id} />
                 </li>
               ))}
             </ul>
