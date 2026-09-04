@@ -63,7 +63,7 @@ function SessionsPage() {
     max_participants: 6,
     price_coins: 10,
     level: "Beginner",
-    mode: "Online",
+    mode: "online",
     objectives: "",
   });
 
