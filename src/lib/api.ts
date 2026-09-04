@@ -107,7 +107,11 @@ function toProfile(row: RawProfile): Profile {
   };
 }
 
-const PROFILE_SELECT = "*, user_skills(kind, level, skills(name, category))";
+// Email is intentionally excluded: it is not readable by other members.
+const PROFILE_COLUMNS =
+  "id, user_id, full_name, university, course, year_of_study, bio, coins, availability_days, preferred_time, mode, rating_avg, rating_count, sessions_taught, sessions_attended, onboarded, is_demo, created_at";
+
+const PROFILE_SELECT = `${PROFILE_COLUMNS}, user_skills(kind, level, skills(name, category))`;
 
 /* ---------------------------------- auth ---------------------------------- */
 
