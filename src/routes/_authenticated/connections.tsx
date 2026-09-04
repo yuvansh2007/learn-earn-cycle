@@ -47,7 +47,11 @@ function Connections() {
 
   const incoming = rows.filter((c) => c.status === "pending" && c.addressee_id === me?.id);
   const outgoing = rows.filter((c) => c.status === "pending" && c.requester_id === me?.id);
-  const accepted = rows.filter((c) => c.status === "accepted");
+  const accepted = rows.filter(
+    (c) =>
+      c.status === "accepted" &&
+      (c.requester_id === me?.id || c.addressee_id === me?.id),
+  );
 
   const other = (c: { requester_id: string; addressee_id: string }) =>
     c.requester_id === me?.id ? c.addressee_id : c.requester_id;
