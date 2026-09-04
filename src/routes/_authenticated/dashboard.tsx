@@ -17,6 +17,7 @@ import {
 } from "@/lib/api";
 import { rankTeachers, buildExchangeGraph, findExchangeCycles } from "@/lib/matching";
 import { Button } from "@/components/ui/button";
+import { CycleCard } from "@/components/cycle-card";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
